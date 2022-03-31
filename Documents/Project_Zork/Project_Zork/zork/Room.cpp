@@ -41,6 +41,15 @@ Room* Room::nextRoom(string direction) {
 				// part of the "pair" (<string, Room*>) and return it.
 }
 
+Room* Room::anyRoom(string direction) {
+    map<string, Room*>::iterator next = exits.find(direction); //returns an iterator for the "pair"
+    if (next == exits.end())
+        return NULL; // if exits.end() was returned, there's no room in that direction.
+    return next->second; // If there is a room, remove the "second" (Room*)
+                // part of the "pair" (<string, Room*>) and return it.
+}
+
+
 void Room::addItem(Item *inItem) {
     //cout <<endl;
     //cout << "Just added" + inItem->getLongDescription();

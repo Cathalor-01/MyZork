@@ -14,34 +14,39 @@ ZorkUL::ZorkUL() {
 }
 
 void ZorkUL::createRooms()  {
-	Room *a, *b, *c, *d, *e, *f, *g, *h, *i;
+    aPtr = new Room("a");
 
-	a = new Room("a");
-        a->addItem(new Item("x", 1, 11));
-        a->addItem(new Item("y", 2, 22));
-	b = new Room("b");
-        b->addItem(new Item("xx", 3, 33));
-        b->addItem(new Item("yy", 4, 44));
-	c = new Room("c");
-	d = new Room("d");
-	e = new Room("e");
-	f = new Room("f");
-	g = new Room("g");
-	h = new Room("h");
-	i = new Room("i");
+       bPtr = new Room("b");
+           bPtr->addItem(new Item("piece two", 3, 33));
+       cPtr = new Room("c");
 
-//             (N, E, S, W)
-	a->setExits(f, b, d, c);
-	b->setExits(NULL, NULL, NULL, a);
-	c->setExits(NULL, a, NULL, NULL);
-	d->setExits(a, e, NULL, i);
-	e->setExits(NULL, NULL, NULL, d);
-	f->setExits(NULL, g, a, h);
-	g->setExits(NULL, NULL, NULL, f);
-	h->setExits(NULL, f, NULL, NULL);
-    i->setExits(NULL, d, NULL, NULL);
+       dPtr = new Room("d");
 
-        currentRoom = a;
+       ePtr = new Room("e");
+           ePtr->addItem(new Item("piece one", 1, 11));
+       fPtr = new Room("f");
+       gPtr = new Room("g");
+
+       hPtr = new Room("h");
+       hPtr->addItem(new Item("piece three", 4, 44));
+       iPtr = new Room("i");
+       iPtr->addItem(new Item("piece four", 2, 22));
+       jPtr = new Room("j");
+
+
+   //             (N, E, S, W)
+       aPtr->setExits(fPtr, bPtr, dPtr, cPtr);
+       bPtr->setExits(NULL, NULL, NULL, aPtr);
+       cPtr->setExits(NULL, aPtr, NULL, NULL);
+       dPtr->setExits(aPtr, ePtr, jPtr, iPtr);
+       ePtr->setExits(NULL, NULL, NULL, dPtr);
+       fPtr->setExits(NULL, gPtr, aPtr, hPtr);
+       gPtr->setExits(NULL, NULL, NULL, fPtr);
+       hPtr->setExits(NULL, fPtr, NULL, NULL);
+       iPtr->setExits(NULL, dPtr, NULL, NULL);
+       jPtr->setExits(dPtr, NULL, NULL, NULL);
+
+        currentRoom = aPtr;
 }
 
 /**
@@ -98,11 +103,16 @@ bool ZorkUL::processCommand(Command command) {
 		cout << "         |         " << endl;
 		cout << "         |         " << endl;
 		cout << "[i] --- [d] --- [e]" << endl;
-		}
+        cout << "         |         " << endl;
+        cout << "         |         " << endl;
+        cout << "        [j]        " << endl;
+        }
 
 	else if (commandWord.compare("go") == 0)
 		goRoom(command);
-
+    else if (commandWord.compare("teleport") == 0){
+        teleport();
+    }
     else if (commandWord.compare("take") == 0)
     {
        	if (!command.hasSecondWord()) {
@@ -146,6 +156,8 @@ bool ZorkUL::processCommand(Command command) {
 	}
 	return false;
 }
+
+
 /** COMMANDS **/
 void ZorkUL::printHelp() {
 	cout << "valid inputs are; " << endl;
@@ -185,3 +197,17 @@ string ZorkUL::go(string direction) {
 		return currentRoom->longDescription();
 	}
 }
+
+string ZorkUL::teleport(){
+
+    string teleport = "\nTeleporting...\n";
+
+    int random = rand()%10;
+    Room* rooms[]={aPtr, bPtr, cPtr, dPtr, ePtr, fPtr, gPtr, hPtr, iPtr, jPtr};
+    currentRoom = rooms[random];
+
+
+    teleport+= currentRoom->longDescription()+"\n";
+    return teleport;
+}
+

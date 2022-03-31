@@ -7,12 +7,14 @@
 #include "item.h"
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
 
 class ZorkUL {
 private:
+    Room *currentRoom, *aPtr, *bPtr, *cPtr, *dPtr, *ePtr, *fPtr, *gPtr, *hPtr, *iPtr, *jPtr;
 	Parser parser;
-	Room *currentRoom;
+    vector<Room> rooms;
 	void createRooms();
 	void printWelcome();
 	bool processCommand(Command command);
@@ -25,6 +27,7 @@ public:
 	ZorkUL();
 	void play();
 	string go(string direction);
+    string teleport();
 };
 
 #endif /*ZORKUL_H_*/
